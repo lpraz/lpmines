@@ -1,20 +1,30 @@
 #include <ctype.h>
 #include <stdio.h>
 
-/* Magic numbers */
+/* Magic numbers: field cell state */
 #define HIDDEN 0
 #define REVEALED 1
 #define FLAGGED 2
 
+/* Magic numbers: difficulty/field dimensions */
+#define BEGINNER_WIDTH 10
+#define BEGINNER_HEIGHT 10
+#define INTERMEDIATE_WIDTH 20
+#define INTERMEDIATE_HEIGHT 20
+#define EXPERT_WIDTH 40
+#define EXPERT_HEIGHT 25
+#define MAX_CUSTOM_WIDTH 50
+#define MAX_CUSTOM_HEIGHT 30
+
+/* Main method */
 int main(void) {
     /* Board vars */
     int ground[100][100];
     int surface[100][100];
     int sizex, sizey;
-    int *psizex = &sizex, *psizey = &sizey
     
     /* Intro menu; get difficulty */
-    menu(psizex, psizey);
+    menu(&sizex, &sizey);
     
     /* Game loop */
     while (/* Not all safe tiles uncovered, no mines uncovered */) {
@@ -41,26 +51,62 @@ void menu(int *psizex, int *psizey) {
         input = tolower(getchar());
         
         /* Declare board size */
-        select(input) {
-            case 'b':
+        switch (input) {
+            case 'b': /* Beginner */
                 *psizex = 10;
                 *psizey = 10;
                 break;
-            case 'i':
+            case 'i': /* Intermediate */
                 *psizex = 20;
                 *psizey = 20;
                 break;
-            case 'e':
+            case 'e': /* Advanced */
                 *psizex = 40;
                 *psizey = 25;
                 break;
+            case 'c': /* Custom */
+                custom(*psizex, *psizey);
             case 'a':
                 printf("Beginner: 10x10\n");
                 printf("Intermediate: 20x20\n");
                 printf("Expert: 40x25\n");
                 break;
         }
-    } while (input != 'b' && input != 'i' && input != 'e'
+    } while (input != 'b' && input != 'i' && input != 'e');
+}
+
+/* Sets field size to custom values */
+void custom(int *psizex, int *psizey) {
+    
+}
+
+/* Parses an in-game action with code x:y:a */
+void parsemove(char[] in) {
+    int x, y;
+    char action;
+    switch (action) {
+        case 'd' /* Dig */
+        case 'p' /* Place flag */
+            if (*surface[y][x] == HIDDEN) {
+                printf("Placed flag at (%d, %d).\n", x, y)
+                *surface[y][x] = FLAGGED;
+            } else if (*surface[y][x] == FLAGGED) {
+                printf("The cell at (%d, %d) is already flagged!\n", x, y);
+            } else if (*surface[y][x] == REVEALED) {
+                printf("The cell at (%d, %d) is already exposed!\n", x, y);
+            }
+            break;
+        case 'r' /* Remove flag */
+            if (*surface[y][x] == FLAGGED) {
+                printf("Removed flag at (%d, %d).\n", x, y)
+                *surface[y][x] == HIDDEN;
+            } else if (*surface[y][x] == HIDDEN) {
+                printf("The cell at (%d, %d) has no flag!\n", x, y);
+            } else if (*surface[y][x] == REVEALED) {
+                printf("The cell at (%d, %d) is already exposed!\n", x, y);
+            }
+            break;
+    }
 }
 
 /* Prints the field */
