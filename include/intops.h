@@ -7,6 +7,9 @@
 #ifndef INTOPS_H
 #define INTOPS_H
 
+/* Constants */
+#define BASE 10
+
 /* Gives digits in an integer. */
 int numlength(int num);
 
