@@ -13,9 +13,26 @@
 
 /* Stdlib imports */
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* Changes things based on command-line arguments. */
+/* TODO: Process playfield params */
+void args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
+          bool *color) {
+    for (int i = 1; i < argc; i++) {
+        if (argv[i][0] == '-') {
+            for (int j = 0; j < strlen(argv[i]); j++) {
+                if (argv[i][j] == 'm')
+                    *color = false;
+            }
+        } else if (argv[i] == "--monochrome") {
+            *color = false;
+        }
+    }
+}
 
 /* Provides the main menu, allowing the user to select a difficulty. */
 void menu(int *psizex, int *psizey, int *pmines) {

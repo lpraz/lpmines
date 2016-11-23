@@ -8,6 +8,9 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+/* Stdlib imports */
+#include <stdbool.h>
+
 /* Constants */
 #define BEGINNER_WIDTH 10
 #define BEGINNER_HEIGHT 10
@@ -24,6 +27,10 @@
 #define INPUT_LENGTH 10
 #define NO_INPUT_FLAG -1
 #define COMMAND_TOKENS ".,;:"
+
+/* Changes things based on command-line arguments. */
+void args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
+          bool *color);
 
 /* Provides the main menu, allowing the user to select a difficulty. */
 void menu(int *psizex, int *psizey, int *pmines);

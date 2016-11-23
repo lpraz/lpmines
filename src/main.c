@@ -5,6 +5,7 @@
  */
 
 /* Imports for C libraries */
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +18,7 @@
 #include "input.h"
 
 /* Main method */
-int main(void) {
+int main(int argc, char *argv[]) {
     /* Board vars */
     int ground[MAX_HEIGHT][MAX_WIDTH];
     int surface[MAX_HEIGHT][MAX_WIDTH];
@@ -30,6 +31,11 @@ int main(void) {
 
     int result;
     
+    bool color = true;
+    
+    /* Get command-line arguments */
+    args(argc, argv, &sizex, &sizey, &mines, &color);
+    
     /* Intro menu; get difficulty */
     menu(&sizex, &sizey, &mines);
     
@@ -39,7 +45,7 @@ int main(void) {
     /* Game loop */
     while (result = finished(sizex, sizey, ground, surface), !result) {
         /* Print field */
-        drawfield(sizex, sizey, ground, surface);
+        drawfield(sizex, sizey, color, ground, surface);
         
         /* Get input */
         printf("It's your move: ");
@@ -54,7 +60,7 @@ int main(void) {
     }
     
     /* Show result */
-    drawfield(sizex, sizey, ground, surface);
+    drawfield(sizex, sizey, color, ground, surface);
     
     if (result == RESULT_CLEARED)
         printf("You cleared all the mines! Congratulations!\n");

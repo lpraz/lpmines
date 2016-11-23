@@ -79,11 +79,11 @@ void digrec(int x, int y, int sizex, int sizey,
 void pflag(int x, int y,
            int (*ground)[MAX_HEIGHT][MAX_WIDTH],
            int (*surface)[MAX_HEIGHT][MAX_WIDTH]) {
-    if ((*surface)[y][x] == FLAGGED) {
-         printf("Removed flag at (%d, %d).\n", x + 1, y + 1);
-        (*surface)[y][x] = HIDDEN;
-    } else if ((*surface)[y][x] == HIDDEN) {
-        printf("(%d, %d) has no flag!\n", x + 1, y + 1);
+    if ((*surface)[y][x] == HIDDEN) {
+         printf("Placed a flag at (%d, %d).\n", x + 1, y + 1);
+        (*surface)[y][x] = FLAGGED;
+    } else if ((*surface)[y][x] == FLAGGED) {
+        printf("(%d, %d) already has a flag!\n", x + 1, y + 1);
     } else if ((*surface)[y][x] == REVEALED) {
         printf("(%d, %d) is exposed!\n", x + 1, y + 1);
     }

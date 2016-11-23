@@ -100,8 +100,6 @@ void drawfield(int sizex, int sizey, bool color,
                             printf(" _");
                             break;
                         case HAS_MINE:
-                            if (color) printf(EMPTY_COLOR);
-                            printf(" ");
                             if (color) printf(MINE_COLOR);
                             printf("X");
                             break;
