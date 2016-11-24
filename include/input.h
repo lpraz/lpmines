@@ -29,7 +29,7 @@
 #define COMMAND_TOKENS ".,;:"
 
 /* Changes things based on command-line arguments. */
-void args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
+bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
           bool *color);
 
 /* Provides the main menu, allowing the user to select a difficulty. */

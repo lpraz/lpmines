@@ -33,8 +33,9 @@ int main(int argc, char *argv[]) {
     
     bool color = true;
     
-    /* Get command-line arguments */
-    args(argc, argv, &sizex, &sizey, &mines, &color);
+    /* Get command-line arguments, exit if appropriate */
+    if (!args(argc, argv, &sizex, &sizey, &mines, &color))
+        return 0;
     
     /* Intro menu; get difficulty */
     menu(&sizex, &sizey, &mines);

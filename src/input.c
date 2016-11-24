@@ -18,20 +18,27 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Changes things based on command-line arguments. */
+/* Parses command-line arguments, returns whether the game should
+ * proceed.
+ */
 /* TODO: Process playfield params */
-void args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
+bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
           bool *color) {
     for (int i = 1; i < argc; i++) {
-        if (argv[i][0] == '-') {
+        if (strcmp(argv[i], "--monochrome") == 0) {
+            *color = false;
+        } else if (strcmp(argv[i], "--version") == 0) {
+            printf("lpmines 16.11.24.1\n");
+            return false;
+        } else if (argv[i][0] == '-') {
             for (int j = 0; j < strlen(argv[i]); j++) {
                 if (argv[i][j] == 'm')
                     *color = false;
             }
-        } else if (argv[i] == "--monochrome") {
-            *color = false;
         }
     }
+    
+    return true;
 }
 
 /* Provides the main menu, allowing the user to select a difficulty. */
