@@ -21,7 +21,6 @@ void generate(int sizex, int sizey, int mines,
               int (*ground)[MAX_HEIGHT][MAX_WIDTH],
               int (*surface)[MAX_HEIGHT][MAX_WIDTH]) {
     int randx, randy;
-    int near;
     
     /* Set RNG seed */
     srand(time(0));
@@ -37,37 +36,27 @@ void generate(int sizex, int sizey, int mines,
         }
     }
     
-    /* Place mines */
+    /* Place mines and "how many mines near?" numbers */
     while (mines > 0) {
         randx = rand() % sizex;
         randy = rand() % sizey;
         
+        printf("Mine at %d %d\n", randx, randy);
         if ((*ground)[randy][randx] != HAS_MINE) {
             (*ground)[randy][randx] = HAS_MINE;
-            --mines;
-        }
-    }
-    
-    /* Generate "how many mines near?" nums */
-    for (int i = 0; i < sizey; i++) {
-        for (int j = 0; j < sizex; j++) {
-            if ((*ground)[i][j] != HAS_MINE) {
-                near = 0;
-                
-                for (int k = (((i - 1) > 0) ? (i - 1) : 0);
-                     k < (((i + 1) > sizey) ? sizey : (i + 2));
-                     k++) {
-                    for (int l = (((j - 1) > 0) ? (j - 1) : 0);
-                         l < (((j + 1) > sizex) ? sizex : (j + 2));
-                         l++) {
-                        if ((*ground)[k][l] == HAS_MINE)
-                            near++;
-                     }
+            for (int i = (((randy - 1) > 0) ? (randy - 1) : 0);
+                 i < (((randy + 1) >= sizey) ? sizey : (randy + 2));
+                 i++) {
+                for (int j = (((randx - 1) > 0) ? (randx - 1) : 0);
+                     j < (((randx + 1) >= sizex) ? sizex : (randx + 2));
+                     j++) {
+                    if ((*ground)[i][j] == EMPTY)
+                        (*ground)[i][j] = 1;
+                    else if ((*ground)[i][j] != HAS_MINE)
+                        (*ground)[i][j]++;;
                 }
-                
-                if (near != 0)
-                    (*ground)[i][j] = near;
             }
+            mines--;
         }
     }
 }
