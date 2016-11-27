@@ -7,6 +7,7 @@
 #define FIELD_H
 
 /* Local imports */
+#include "cell.h"
 #include "const.h"
 
 /* Stdlib imports */
@@ -30,21 +31,15 @@
 #define EIGHT_COLOR "\033[40;93m"
 
 /* Randomly generates a playfield. */
-void generate(int sizex, int sizey, int mines,
-              int (*ground)[MAX_HEIGHT][MAX_WIDTH],
-              int (*surface)[MAX_HEIGHT][MAX_WIDTH]);
+void generate(int sizex, int sizey, int mines, cell **playfield);
 
 /* Draws the playfield to the terminal. */
-void drawfield(int sizex, int sizey, bool color,
-               int ground[MAX_HEIGHT][MAX_WIDTH],
-               int surface[MAX_HEIGHT][MAX_WIDTH]);
+void drawfield(int sizex, int sizey, bool color, cell **playfield);
 
 /* Draws column numbers (written vertically) for the playfield. */
 void drawcolnums(int sizex, int sizey);
 
 /* Checks if the field has been completely swept. */
-int finished(int sizex, int sizey,
-             int ground[MAX_HEIGHT][MAX_WIDTH],
-             int surface[MAX_HEIGHT][MAX_WIDTH]);
+int finished(int sizex, int sizey, cell **playfield);
 
 #endif
