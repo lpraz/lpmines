@@ -60,10 +60,10 @@ void digrec(int x, int y, int sizex, int sizey, cell **playfield) {
     
     if (playfield[y][x].ground == EMPTY)
         for (int i = (((y - 1) < 0) ? 0 : (y - 1));
-             i < (((y + 1) > sizey) ? sizey : (y + 2));
+             i < (((y + 1) >= sizey) ? sizey : (y + 2));
              i++)
             for (int j = (((x - 1) < 0) ? 0 : (x - 1));
-                 j < (((x + 1) > sizex) ? sizex : (x + 2));
+                 j < (((x + 1) >= sizex) ? sizex : (x + 2));
                  j++)
                 if (playfield[i][j].surface == HIDDEN)
                     digrec(j, i, sizex, sizey, playfield);

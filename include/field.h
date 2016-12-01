@@ -14,21 +14,21 @@
 #include <stdbool.h>
 
 /* Constants - colours */
-#define COL_NUM_COLOR "\033[40;93m"
-#define ROW_NUM_COLOR "\033[40;93m"
+#define COL_NUM_COLOR "\033[0;93m"
+#define ROW_NUM_COLOR "\033[0;93m"
 #define HIDDEN_COLOR "\033[0m"
 #define EMPTY_COLOR "\033[0m"
-#define FLAG_COLOR "\033[40;91m"
+#define FLAG_COLOR "\033[0;91m"
 #define MINE_COLOR "\033[41;37m"
 
-#define ONE_COLOR "\033[40;34m"
-#define TWO_COLOR "\033[40;32m"
-#define THREE_COLOR "\033[40;31m"
-#define FOUR_COLOR "\033[40;33m"
-#define FIVE_COLOR "\033[40;94m"
-#define SIX_COLOR "\033[40;92m"
-#define SEVEN_COLOR "\033[40;91m"
-#define EIGHT_COLOR "\033[40;93m"
+#define ONE_COLOR "\033[0;34m"
+#define TWO_COLOR "\033[0;32m"
+#define THREE_COLOR "\033[0;31m"
+#define FOUR_COLOR "\033[0;33m"
+#define FIVE_COLOR "\033[0;94m"
+#define SIX_COLOR "\033[0;92m"
+#define SEVEN_COLOR "\033[0;91m"
+#define EIGHT_COLOR "\033[0;93m"
 
 /* Randomly generates a playfield. */
 void generate(int sizex, int sizey, int mines, cell **playfield);
