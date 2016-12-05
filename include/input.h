@@ -12,6 +12,10 @@
 #include <stdbool.h>
 
 /* Constants */
+#define INPUT_LENGTH 10
+#define NO_INPUT_FLAG -1
+#define COMMAND_TOKENS ".,;:"
+
 #define BEGINNER_WIDTH 10
 #define BEGINNER_HEIGHT 10
 #define BEGINNER_MINES 10
@@ -23,10 +27,6 @@
 #define EXPERT_WIDTH 30
 #define EXPERT_HEIGHT 20
 #define EXPERT_MINES 90
-
-#define INPUT_LENGTH 10
-#define NO_INPUT_FLAG -1
-#define COMMAND_TOKENS ".,;:"
 
 /* Changes things based on command-line arguments. */
 bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,

@@ -19,7 +19,7 @@ void parsemove(int x, int y, char action, int sizex, int sizey,
                cell **playfield) {
     /* Check if cell location is valid */
     if (x >= sizex || x < 0 || y > sizey || y < 0) {
-        printf("That isn't a valid cell!");
+        printf("That isn't a valid cell!\n");
         return;
     }
     

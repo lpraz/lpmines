@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
     /* Board vars */
     cell **playfield;
     int sizex, sizey, mines;
+    sizex = sizey = mines = NO_INPUT_FLAG;
     
     /* Input vars */
     char in[INPUT_LENGTH];
