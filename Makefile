@@ -6,10 +6,15 @@
 CC = gcc
 #CFLAGS = 
 
-# Directories
+# Directories (build)
 SRCDIR = src
 INCLDIR = include
 BUILDDIR = build
+
+# Directories (install)
+#DESTDIR = 
+PREFIX = /usr/games
+INSTTARGET = lpmines
 
 # Extension?
 SRCEXT = c
@@ -30,3 +35,13 @@ $(TARGET): $(OBJECTS)
 # Build objects from source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	$(CC) -I $(INCLDIR) -c -o $@ $<
+
+# Install to /usr/games
+.PHONY: install
+install: $(TARGET)
+	cp $< $(DESTDIR)$(PREFIX)/$(INSTTARGET)
+
+# Uninstall from /usr/games
+.PHONY: uninstall
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/$(INSTTARGET)
