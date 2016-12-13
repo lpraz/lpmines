@@ -4,7 +4,7 @@
 
 # Compiler options
 CC = gcc
-#CFLAGS = 
+CFLAGS = -std=c99
 
 # Directories (build)
 SRCDIR = src
@@ -34,7 +34,7 @@ $(TARGET): $(OBJECTS)
 
 # Build objects from source files
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	$(CC) -I $(INCLDIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(INCLDIR) -c -o $@ $<
 
 # Install to /usr/games
 .PHONY: install
@@ -45,3 +45,8 @@ install: $(TARGET)
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(INSTTARGET)
+
+# Clean objects
+.PHONY: clean
+clean:
+	rm -f $(BUILDDIR)/*.o
