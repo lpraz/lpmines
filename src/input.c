@@ -24,6 +24,8 @@
 /* TODO: Process playfield params */
 bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
           bool *color) {
+    char *temp;
+    
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--monochrome") == 0) {
             *color = false;
@@ -42,6 +44,18 @@ bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
             *psizex = EXPERT_WIDTH;
             *psizey = EXPERT_HEIGHT;
             *pmines = EXPERT_MINES;
+        } else if (strncmp(argv[i], "--width=", 8) == 0) {
+            temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
+            strcpy(temp, argv[i] + 8);
+            *psizex = atoi(temp);
+        } else if (strncmp(argv[i], "--height=", 9) == 0) {
+            temp = malloc((strlen(argv[i]) - 9) * sizeof(char));
+            strcpy(temp, argv[i] + 9);
+            *psizey = atoi(temp);
+        } else if (strncmp(argv[i], "--mines=", 8) == 0) {
+            temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
+            strcpy(temp, argv[i] + 8);
+            *pmines = atoi(temp);
         } else if (argv[i][0] == '-') {
             for (int j = 0; j < strlen(argv[i]); j++) {
                 switch (argv[i][j]) {

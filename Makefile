@@ -16,7 +16,7 @@ BUILDDIR = build
 PREFIX = /usr/games
 INSTTARGET = lpmines
 
-# Extension?
+# Extension
 SRCEXT = c
 
 # Specific files
@@ -36,12 +36,12 @@ $(TARGET): $(OBJECTS)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	$(CC) $(CFLAGS) -I $(INCLDIR) -c -o $@ $<
 
-# Install to /usr/games
+# Install to $(PREFIX)
 .PHONY: install
 install: $(TARGET)
 	cp $< $(DESTDIR)$(PREFIX)/$(INSTTARGET)
 
-# Uninstall from /usr/games
+# Uninstall from $(PREFIX)
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/$(INSTTARGET)
