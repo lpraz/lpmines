@@ -22,8 +22,9 @@
 int main(int argc, char *argv[]) {
     /* Board vars */
     cell **playfield;
-    int sizex, sizey, mines;
+    int sizex, sizey, mines, flags;
     sizex = sizey = mines = NO_INPUT_FLAG;
+    flags = 0;
     
     /* Input vars */
     char in[INPUT_LENGTH];
@@ -66,7 +67,7 @@ int main(int argc, char *argv[]) {
         drawfield(sizex, sizey, color, playfield);
         
         /* Get input */
-        printf("It's your move: ");
+        printf("You have placed %d/%d flags. It's your move: ", flags, mines);
         scanf("%s", in);
         
         /* Clear screen */
@@ -74,12 +75,13 @@ int main(int argc, char *argv[]) {
         
         /* Use input */
         split(in, &x, &y, &action);
-        parsemove(x, y, action, sizex, sizey, playfield);
+        parsemove(x, y, action, sizex, sizey, &flags, playfield);
     }
     
     /* Show result */
     drawfield(sizex, sizey, color, playfield);
     
+    printf(EMPTY_COLOR);
     if (result == RESULT_CLEARED)
         printf("You cleared all the mines! Congratulations!\n");
     else if (result == RESULT_EXPLODED)

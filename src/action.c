@@ -16,7 +16,7 @@
 
 /* Performs an in-game action based on a command. */
 void parsemove(int x, int y, char action, int sizex, int sizey,
-               cell **playfield) {
+               int *flags, cell **playfield) {
     /* Check if cell location is valid */
     if (x >= sizex || x < 0 || y > sizey || y < 0) {
         printf("That isn't a valid cell!\n");
@@ -29,10 +29,11 @@ void parsemove(int x, int y, char action, int sizex, int sizey,
             dig(x, y, sizex, sizey, playfield);
             break;
         case 'p': /* Place flag */
-            pflag(x, y, playfield);
+        case 'f':
+            pflag(x, y, flags, playfield);
             break;
         case 'r': /* Remove flag */
-            rflag(x, y, playfield);
+            rflag(x, y, flags, playfield);
             break;
         default: /* Anything else */
             printf("That isn't a valid action!\n");
@@ -72,10 +73,11 @@ void digrec(int x, int y, int sizex, int sizey, cell **playfield) {
 
 /* Checks if a cell on the field can have a flag placed on it. If so
  * places it. */
-void pflag(int x, int y, cell **playfield) {
+void pflag(int x, int y, int *flags, cell **playfield) {
     if (playfield[y][x].surface == HIDDEN) {
-         printf("Placed a flag at (%d, %d).\n", x + 1, y + 1);
+        printf("Placed a flag at (%d, %d).\n", x + 1, y + 1);
         playfield[y][x].surface = FLAGGED;
+        (*flags)++;
     } else if (playfield[y][x].surface == FLAGGED) {
         printf("(%d, %d) already has a flag!\n", x + 1, y + 1);
     } else if (playfield[y][x].surface == REVEALED) {
@@ -85,10 +87,11 @@ void pflag(int x, int y, cell **playfield) {
 
 /* Checks if a cell on the field can have a flag removed from it. If
  * so, removes it. */
-void rflag(int x, int y, cell **playfield) {
+void rflag(int x, int y, int *flags, cell **playfield) {
     if (playfield[y][x].surface == FLAGGED) {
         printf("Removed flag at (%d, %d).\n", x + 1, y + 1);
         playfield[y][x].surface = HIDDEN;
+        (*flags)--;
     } else if (playfield[y][x].surface == HIDDEN) {
         printf("(%d, %d) has no flag!\n", x + 1, y + 1);
     } else if (playfield[y][x].surface == REVEALED) {

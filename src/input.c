@@ -21,7 +21,6 @@
 /* Parses command-line arguments, returns whether the game should
  * proceed.
  */
-/* TODO: Process playfield params */
 bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
           bool *color) {
     char *temp;

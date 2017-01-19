@@ -8,8 +8,9 @@ ask for?
  * Colour graphics on aixterm-compatible terminals!
 
 ## Building and (Un)Installing
- * Installing: On Linux systems, just `git clone` this repository, then
-    `make`, then (`sudo`) `make install`. Your binary will be installed to 
-    `/usr/games/lpmines` by default. If you don't like this, just change
-    the `PREFIX` and `INSTTARGET` variables in the makefile.
+ * Building: On Linux systems, just `git clone` this repository, then
+    `make`.
+ * Installing: After building, (`sudo`) `make install`. Your binary will be
+    installed to `/usr/bin/bfpp` by default. If you don't like this, just
+    change the `PREFIX` and `INSTTARGET` variables in the makefile.
  * Uninstalling: Just (`sudo`) `make uninstall`.

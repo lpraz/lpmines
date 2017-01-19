@@ -13,7 +13,7 @@
 
 /* Performs an in-game action based on a command. */
 void parsemove(int x, int y, char action, int sizex, int sizey,
-               cell **playfield);
+               int *flags, cell **playfield);
 
 /* Checks if a cell on the field is diggable. If so, digs it. */
 void dig(int x, int y, int sizex, int sizey, cell **playfield);
@@ -25,10 +25,10 @@ void digrec(int x, int y, int sizex, int sizey, cell **playfield);
 
 /* Checks if a cell on the field can have a flag placed on it. If so
  * places it. */
-void pflag(int x, int y, cell **playfield);
+void pflag(int x, int y, int *flags, cell **playfield);
 
 /* Checks if a cell on the field can have a flag removed from it. If
  * so, removes it. */
-void rflag(int x, int y, cell **playfield);
+void rflag(int x, int y, int *flags, cell **playfield);
 
 #endif
