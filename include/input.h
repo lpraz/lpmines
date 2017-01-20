@@ -13,7 +13,7 @@
 
 /* Constants */
 #define INPUT_LENGTH 10
-#define NO_INPUT_FLAG -1
+#define NO_INPUT_FLAG -1000
 #define COMMAND_TOKENS ".,;:"
 
 #define BEGINNER_WIDTH 10

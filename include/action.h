@@ -9,11 +9,13 @@
 
 /* Local imports */
 #include "cell.h"
-#include "const.h"
+
+/* Stdlib imports */
+#include <stdbool.h>
 
 /* Performs an in-game action based on a command. */
-void parsemove(int x, int y, char action, int sizex, int sizey,
-               int *flags, cell **playfield);
+void parsemove(int x, int y, char action, int sizex, int sizey, int mines,
+               int *flags, bool *generated, cell **playfield);
 
 /* Checks if a cell on the field is diggable. If so, digs it. */
 void dig(int x, int y, int sizex, int sizey, cell **playfield);

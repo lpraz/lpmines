@@ -10,13 +10,15 @@
 /* Local imports */
 #include "cell.h"
 #include "const.h"
+#include "field.h"
 
 /* Stdlib imports */
+#include <stdbool.h>
 #include <stdio.h>
 
 /* Performs an in-game action based on a command. */
-void parsemove(int x, int y, char action, int sizex, int sizey,
-               int *flags, cell **playfield) {
+void parsemove(int x, int y, char action, int sizex, int sizey, int mines,
+               int *flags, bool *generated, cell **playfield) {
     /* Check if cell location is valid */
     if (x >= sizex || x < 0 || y > sizey || y < 0) {
         printf("That isn't a valid cell!\n");
@@ -26,13 +28,25 @@ void parsemove(int x, int y, char action, int sizex, int sizey,
     /* Perform the action */
     switch(action) {
         case 'd': /* Dig */
+            if (!(*generated)) {
+                generate(sizex, sizey, mines, x, y, playfield);
+                (*generated) = true;
+            }
             dig(x, y, sizex, sizey, playfield);
             break;
         case 'p': /* Place flag */
         case 'f':
+            if (!(*generated)) {
+                generate(sizex, sizey, mines, x, y, playfield);
+                *generated = true;
+            }
             pflag(x, y, flags, playfield);
             break;
         case 'r': /* Remove flag */
+            if (!generated) {
+                generate(sizex, sizey, mines, x, y, playfield);
+                *generated = true;
+            }
             rflag(x, y, flags, playfield);
             break;
         default: /* Anything else */

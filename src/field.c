@@ -18,7 +18,8 @@
 #include <time.h>
 
 /* Randomly generates a playfield. */
-void generate(int sizex, int sizey, int mines, cell **playfield) {
+void generate(int sizex, int sizey, int mines, int exclx, int excly,
+              cell **playfield) {
     int randx, randy;
     
     /* Set RNG seed */
@@ -37,7 +38,8 @@ void generate(int sizex, int sizey, int mines, cell **playfield) {
         randx = rand() % sizex;
         randy = rand() % sizey;
         
-        if (playfield[randy][randx].ground != HAS_MINE) {
+        if (playfield[randy][randx].ground != HAS_MINE &&
+            (randx != exclx || randy != excly)) {
             playfield[randy][randx].ground = HAS_MINE;
             for (int i = (((randy - 1) > 0) ? (randy - 1) : 0);
                  i < (((randy + 1) >= sizey) ? sizey : (randy + 2));
@@ -57,7 +59,8 @@ void generate(int sizex, int sizey, int mines, cell **playfield) {
 }
 
 /* Draws the playfield to the terminal. */
-void drawfield(int sizex, int sizey, bool color, cell **playfield) {
+void drawfield(int sizex, int sizey, bool color, bool generated,
+               cell **playfield) {
     /* Print column numbers */
     if (color) printf(COL_NUM_COLOR);
     drawcolnums(sizex, sizey);
@@ -70,67 +73,72 @@ void drawfield(int sizex, int sizey, bool color, cell **playfield) {
         
         for (int j = 0; j < sizex; j++) {
             /* Print contents of each cell */
-            switch(playfield[i][j].surface) {
-                case HIDDEN:
-                    if (color) printf(HIDDEN_COLOR);
-                    printf(" .");
-                    break;
-                case REVEALED:
-                    switch(playfield[i][j].ground) {
-                        case EMPTY:
-                            if (color) printf(EMPTY_COLOR);
-                            printf(" _");
+            if (!generated) {
+                if (color) printf(HIDDEN_COLOR);
+                printf(" .");
+            } else {
+                switch(playfield[i][j].surface) {
+                    case HIDDEN:
+                        if (color) printf(HIDDEN_COLOR);
+                        printf(" .");
+                        break;
+                    case REVEALED:
+                        switch(playfield[i][j].ground) {
+                            case EMPTY:
+                                if (color) printf(EMPTY_COLOR);
+                                printf(" _");
+                                break;
+                            case HAS_MINE:
+                                if (color) printf(EMPTY_COLOR);
+                                printf(" ");
+                                if (color) printf(MINE_COLOR);
+                                printf("X");
+                                break;
+                            case 1:
+                                if (color) printf(ONE_COLOR);
+                                printf(" 1");
+                                break;
+                            case 2:
+                                if (color) printf(TWO_COLOR);
+                                printf(" 2");
+                                break;
+                            case 3:
+                                if (color) printf(THREE_COLOR);
+                                printf(" 3");
+                                break;
+                            case 4:
+                                if (color) printf(FOUR_COLOR);
+                                printf(" 4");
+                                break;
+                            case 5:
+                                if (color) printf(FIVE_COLOR);
+                                printf(" 5");
+                                break;
+                            case 6:
+                                if (color) printf(SIX_COLOR);
+                                printf(" 6");
+                                break;
+                            case 7:
+                                if (color) printf(SEVEN_COLOR);
+                                printf(" 7");
+                                break;
+                            case 8:
+                                if (color) printf(EIGHT_COLOR);
+                                printf(" 8");
+                                break;
+                            default:
+                                printf(" %d", playfield[i][j].ground);
                             break;
-                        case HAS_MINE:
-                            if (color) printf(EMPTY_COLOR);
-                            printf(" ");
-                            if (color) printf(MINE_COLOR);
-                            printf("X");
-                            break;
-                        case 1:
-                            if (color) printf(ONE_COLOR);
-                            printf(" 1");
-                            break;
-                        case 2:
-                            if (color) printf(TWO_COLOR);
-                            printf(" 2");
-                            break;
-                        case 3:
-                            if (color) printf(THREE_COLOR);
-                            printf(" 3");
-                            break;
-                        case 4:
-                            if (color) printf(FOUR_COLOR);
-                            printf(" 4");
-                            break;
-                        case 5:
-                            if (color) printf(FIVE_COLOR);
-                            printf(" 5");
-                            break;
-                        case 6:
-                            if (color) printf(SIX_COLOR);
-                            printf(" 6");
-                            break;
-                        case 7:
-                            if (color) printf(SEVEN_COLOR);
-                            printf(" 7");
-                            break;
-                        case 8:
-                            if (color) printf(EIGHT_COLOR);
-                            printf(" 8");
-                            break;
-                        default:
-                            printf(" %d", playfield[i][j].ground);
-                            break;
-                    }
-                    break;
-                case FLAGGED:
-                    if (color) printf(FLAG_COLOR);
-                    printf(" F");
-                    break;
-                default:
-                    printf(" ?");
-                    break;
+                        }
+                        break;
+                    case FLAGGED:
+                        if (color) printf(FLAG_COLOR);
+                        printf(" F");
+                        break;
+                    default:
+                        printf(" ?");
+                        break;
+                }
             }
         }
         printf("\n");

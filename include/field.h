@@ -1,6 +1,6 @@
 /*
  * field.h
- * Defines abstract functions related to the playfield.
+ * Defines constants and abstract functions related to the playfield.
  */
 
 #ifndef FIELD_H
@@ -31,10 +31,12 @@
 #define EIGHT_COLOR "\033[0;93m"
 
 /* Randomly generates a playfield. */
-void generate(int sizex, int sizey, int mines, cell **playfield);
+void generate(int sizex, int sizey, int mines, int exclx, int excly,
+              cell **playfield);
 
 /* Draws the playfield to the terminal. */
-void drawfield(int sizex, int sizey, bool color, cell **playfield);
+void drawfield(int sizex, int sizey, bool color, bool generated,
+               cell **playfield);
 
 /* Draws column numbers (written vertically) for the playfield. */
 void drawcolnums(int sizex, int sizey);

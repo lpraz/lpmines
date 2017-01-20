@@ -26,35 +26,37 @@ bool args(int argc, char *argv[], int *psizex, int *psizey, int *pmines,
     char *temp;
     
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--monochrome") == 0) {
-            *color = false;
-        } else if (strcmp(argv[i], "--version") == 0) {
-            printf("lpmines\n");
-            return false;
-        } else if (strcmp(argv[i], "--beginner") == 0) {
-            *psizex = BEGINNER_WIDTH;
-            *psizey = BEGINNER_HEIGHT;
-            *pmines = BEGINNER_MINES;
-        } else if (strcmp(argv[i], "--intermediate") == 0) {
-            *psizex = INTERMEDIATE_WIDTH;
-            *psizey = INTERMEDIATE_HEIGHT;
-            *pmines = INTERMEDIATE_MINES;
-        } else if (strcmp(argv[i], "--expert") == 0) {
-            *psizex = EXPERT_WIDTH;
-            *psizey = EXPERT_HEIGHT;
-            *pmines = EXPERT_MINES;
-        } else if (strncmp(argv[i], "--width=", 8) == 0) {
-            temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
-            strcpy(temp, argv[i] + 8);
-            *psizex = atoi(temp);
-        } else if (strncmp(argv[i], "--height=", 9) == 0) {
-            temp = malloc((strlen(argv[i]) - 9) * sizeof(char));
-            strcpy(temp, argv[i] + 9);
-            *psizey = atoi(temp);
-        } else if (strncmp(argv[i], "--mines=", 8) == 0) {
-            temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
-            strcpy(temp, argv[i] + 8);
-            *pmines = atoi(temp);
+        if (strncmp(argv[i], "--", 2) == 0) {
+            if (strcmp(argv[i], "--monochrome") == 0) {
+                *color = false;
+            } else if (strcmp(argv[i], "--version") == 0) {
+                printf("lpmines\n");
+                return false;
+            } else if (strcmp(argv[i], "--beginner") == 0) {
+                *psizex = BEGINNER_WIDTH;
+                *psizey = BEGINNER_HEIGHT;
+                *pmines = BEGINNER_MINES;
+            } else if (strcmp(argv[i], "--intermediate") == 0) {
+                *psizex = INTERMEDIATE_WIDTH;
+                *psizey = INTERMEDIATE_HEIGHT;
+                *pmines = INTERMEDIATE_MINES;
+            } else if (strcmp(argv[i], "--expert") == 0) {
+                *psizex = EXPERT_WIDTH;
+                *psizey = EXPERT_HEIGHT;
+                *pmines = EXPERT_MINES;
+            } else if (strncmp(argv[i], "--width=", 8) == 0) {
+                temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
+                strcpy(temp, argv[i] + 8);
+                *psizex = atoi(temp);
+            } else if (strncmp(argv[i], "--height=", 9) == 0) {
+                temp = malloc((strlen(argv[i]) - 9) * sizeof(char));
+                strcpy(temp, argv[i] + 9);
+                *psizey = atoi(temp);
+            } else if (strncmp(argv[i], "--mines=", 8) == 0) {
+                temp = malloc((strlen(argv[i]) - 8) * sizeof(char));
+                strcpy(temp, argv[i] + 8);
+                *pmines = atoi(temp);
+            }
         } else if (argv[i][0] == '-') {
             for (int j = 0; j < strlen(argv[i]); j++) {
                 switch (argv[i][j]) {
@@ -95,8 +97,9 @@ void menu(int *psizex, int *psizey, int *pmines) {
             /* Print messages */
             printf("(B)eginner/(I)ntermediate/(E)xpert/(C)ustom/(A)bout\n");
             printf("Select a difficulty (not case-sensitive): ");
-            scanf("%c", &in);
-            in = tolower(in);
+            //scanf("%c", &in);
+            //in = tolower(in);
+            in = tolower(getchar());
             
             /* Declare board size */
             switch (in) {
@@ -105,21 +108,21 @@ void menu(int *psizex, int *psizey, int *pmines) {
                     *psizey = BEGINNER_HEIGHT;
                     *pmines = BEGINNER_MINES;
                     printf("\033[2J\033[H");
-                    printf("Started a new game on Beginner difficulty.\n");
+                    printf("Started playing on Beginner difficulty.\n");
                     break;
                 case 'i': /* Intermediate */
                     *psizex = INTERMEDIATE_WIDTH;
                     *psizey = INTERMEDIATE_HEIGHT;
                     *pmines = INTERMEDIATE_MINES;
                     printf("\033[2J\033[H");
-                    printf("Started a new game on Intermediate difficulty.\n");
+                    printf("Started playing on Intermediate difficulty.\n");
                     break;
                 case 'e': /* Expert */
                     *psizex = EXPERT_WIDTH;
                     *psizey = EXPERT_HEIGHT;
                     *pmines = EXPERT_MINES;
                     printf("\033[2J\033[H");
-                    printf("Started a new game on Expert difficulty.\n");
+                    printf("Started playing on Expert difficulty.\n");
                     break;
                 case 'c': /* Custom */
                     custom(psizex, psizey, pmines);
@@ -143,8 +146,13 @@ void menu(int *psizex, int *psizey, int *pmines) {
                             MAX_WIDTH,
                             MAX_HEIGHT,
                             MAX_MINES);
+                    printf("Limit on mines may be lower depending ");
+                    printf( "on playfield size.\n");
                     break;
             }
+            
+            /* Get rid of trailing chars, including newline */
+            while (getchar() != '\n');
         } while (in != 'b' && in != 'i' && in != 'e' && in != 'c');
     } else if (*psizex == NO_INPUT_FLAG ||
                *psizey == NO_INPUT_FLAG ||
@@ -160,6 +168,8 @@ void menu(int *psizex, int *psizey, int *pmines) {
 
 /* Lets the user define a custom playfield. */
 void custom(int *psizex, int *psizey, int *pmines) {
+    int max_mines; 
+    
     while (*psizex > MAX_WIDTH || *psizex < 1) {
         if (*psizex != NO_INPUT_FLAG)
             printf("%d is invalid! ", *psizex);
@@ -170,18 +180,22 @@ void custom(int *psizex, int *psizey, int *pmines) {
     
     while (*psizey > MAX_HEIGHT || *psizey < 1) {
         if (*psizey != NO_INPUT_FLAG)
-            printf("%d is invalid!", *psizey);
+            printf("%d is invalid! ", *psizey);
         
         printf("Choose a height from %d to %d: ", 1, MAX_HEIGHT);
         scanf("%d", psizey);
     }
     
-    while (*pmines > MAX_MINES || *pmines < 1) {
+    max_mines = (MAX_MINES < (*psizex * *psizey - 1)
+                 ? MAX_MINES
+                 : (*psizex * *psizey - 1));
+    
+    while (*pmines > max_mines || *pmines < 1) {
         if (*pmines != NO_INPUT_FLAG)
-            printf("%d is invalid!", *pmines);
+            printf("%d is invalid! ", *pmines);
         
         printf("Choose a number of mines from %d to %d: ",
-                1, MAX_MINES);
+                1, max_mines);
         scanf("%d", pmines);
     }
 }
