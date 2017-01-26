@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/ioctl.h>
 
 /* Parses command-line arguments, returns whether the game should
  * proceed.
@@ -96,9 +97,7 @@ void menu(int *psizex, int *psizey, int *pmines) {
         do {
             /* Print messages */
             printf("(B)eginner/(I)ntermediate/(E)xpert/(C)ustom/(A)bout\n");
-            printf("Select a difficulty (not case-sensitive): ");
-            //scanf("%c", &in);
-            //in = tolower(in);
+            printf("Select a difficulty: ");
             in = tolower(getchar());
             
             /* Declare board size */
@@ -168,28 +167,57 @@ void menu(int *psizex, int *psizey, int *pmines) {
 
 /* Lets the user define a custom playfield. */
 void custom(int *psizex, int *psizey, int *pmines) {
-    int max_mines; 
+    struct winsize win;
+    int max_width;
+    int max_height;
+    int max_mines;
+    char confirm[256];
     
-    while (*psizex > MAX_WIDTH || *psizex < 1) {
-        if (*psizex != NO_INPUT_FLAG)
+    /* Get max width/height for current window */
+    ioctl(0, TIOCGWINSZ, &win);
+    max_width = (win.ws_col / 2) - 3;
+    max_height = win.ws_row - 5;
+    
+    /* Width */
+    while (*psizex > max_width || *psizex < 1) {
+        if (*psizex != NO_INPUT_FLAG && *psizex < 1) {
             printf("%d is invalid! ", *psizex);
+        } else if (*psizex > max_width) {
+            printf("This width may exceed the bounds of your terminal, ");
+            printf("proceed? (y/n): ");
+            scanf("%s", confirm);
+            
+            if (confirm[0] == 'y')
+                break;
+        }
 
-        printf("Choose a width from %d to %d: ", 1, MAX_WIDTH);
+        //printf("Choose a width from %d to %d: ", 1, MAX_WIDTH);
+        printf("Choose a width that's at least %d (recommended max: %d): ",
+                1, max_width);
         scanf("%d", psizex);
     }
     
-    while (*psizey > MAX_HEIGHT || *psizey < 1) {
-        if (*psizey != NO_INPUT_FLAG)
+    /* Height */
+    while (*psizey > max_height || *psizey < 1) {
+        if (*psizey != NO_INPUT_FLAG && *psizey < 1) {
             printf("%d is invalid! ", *psizey);
+        } else if (*psizey > max_height) {
+            printf("This height may exceed the bounds of your terminal, ");
+            printf("proceed? (y/n): ");
+            scanf("%s", confirm);
+            
+            if (confirm[0] == 'y')
+                break;
+        }
         
-        printf("Choose a height from %d to %d: ", 1, MAX_HEIGHT);
+        //printf("Choose a height from %d to %d: ", 1, MAX_HEIGHT);
+        printf("Choose a height that's at least %d (recommended max: %d): ",
+                1, max_height);
         scanf("%d", psizey);
     }
     
-    max_mines = (MAX_MINES < (*psizex * *psizey - 1)
-                 ? MAX_MINES
-                 : (*psizex * *psizey - 1));
-    
+    /* Mines */
+    max_mines = *psizex * *psizey - 1;
     while (*pmines > max_mines || *pmines < 1) {
         if (*pmines != NO_INPUT_FLAG)
             printf("%d is invalid! ", *pmines);

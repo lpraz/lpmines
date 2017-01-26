@@ -142,7 +142,8 @@ void drawfield(int sizex, int sizey, bool color, bool generated,
             }
         }
         printf("\n");
-    }    
+    }
+    printf(EMPTY_COLOR);
 }
 
 /* Draws column numbers (written vertically) for the playfield. */

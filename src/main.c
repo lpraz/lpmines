@@ -80,7 +80,6 @@ int main(int argc, char *argv[]) {
     /* Show result */
     drawfield(sizex, sizey, color, generated, playfield);
     
-    printf(EMPTY_COLOR);
     if (result == RESULT_CLEARED)
         printf("You cleared all the mines! Congratulations!\n");
     else if (result == RESULT_EXPLODED)
